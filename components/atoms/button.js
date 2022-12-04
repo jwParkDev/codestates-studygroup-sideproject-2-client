@@ -7,7 +7,7 @@ const StyledButton = styled.button`
   border: 0;
   border-radius: 5px;
   height: ${props => props.height || '2rem'};
-  font-weight: 700;
+  font-weight: ${props => props.fontWeight || '700'};
   margin: ${(props) => props.margin};
   font-size: ${props => props.fontSize || '16px'};
   cursor: pointer;
@@ -29,6 +29,7 @@ export default function Button(props) {
       backgroundColor={props.backgroundColor}
       color={props.color}
       fontSize={props.fontSize}
+      fontWeight={props.fontWeight}
       hoverBackground={props.hoverBackground}
     >
       {props.buttonName}

@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 import { Provider } from 'react-redux';
 
+// nextauth 사용을 위함
+import { SessionProvider } from "next-auth/react"
+
 import Header from '../components/blocks/Header';
 import Footer from '../components/blocks/Footer';
 import { store } from '../ducks/store';
@@ -13,15 +16,17 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
 
   return (
 	<>
     <GlobalStyle />
-    <Provider store={store} >
-      <Header />
-      <Component {...pageProps} />
-    </Provider>
+    <SessionProvider session={session}>
+      <Provider store={store} >
+        <Header />
+        <Component {...pageProps} />
+      </Provider>
+    </SessionProvider>
     {/* <Footer /> */}
 	</>
   )

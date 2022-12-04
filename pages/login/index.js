@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,9 @@ import InputLayout from '../../components/blocks/inputLayout';
 import TextInput from '../../components/atoms/textInput';
 import Button from '../../components/atoms/button';
 import { userInfoSlice, loginStatusSlice, todoInfoSlice } from '../../ducks/slices';
+
+// nextauth 사용을 위함
+import { useSession, signIn } from 'next-auth/react';
 
 const LoginContainer = styled.div`
   width: 20rem;
@@ -21,6 +24,32 @@ const LoginContainer = styled.div`
 
   > a {
     width: 100%;
+  }
+`;
+
+const SnsLoginWrapper = styled.div`
+  width:100%;
+  height: auto;
+  padding: 1.5rem 0;
+  border-bottom:2px solid #f5f5f5;
+`;
+
+const SnsLoginTitle = styled.div`
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  padding-bottom:1.5rem;
+`;
+
+const SnsLoginContainer = styled.div`
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  & > div {
+    cursor: pointer;
+    & > img {
+      width: 60px;
+    }
   }
 `;
 
@@ -40,6 +69,10 @@ const CautionMessage = styled.div`
 `;
 
 export default function Login() {
+  // nextauth 사용을 위함
+  const {data : session} = useSession();
+  // console.log(session);
+
   // 로그인 후 페이지 전환을 하기 위해 react-router-dom의 useNavigate hook을 사용
   const router = useRouter();
 
@@ -81,8 +114,35 @@ export default function Login() {
     router.push('/signup');
   };
 
+  // SNS로 로그인했을 때, 로그인 상태를 변경해주고, userInfo를 업데이트 해줌
+  // useEffect(() => {
+  //   if(session) {
+  //     axios
+  //     .post('http://localhost:4000/userinfo/snslogin', {
+  //       data: {
+  //         username: session.user.email.split('@')[0],
+  //         email: session.user.email,
+  //       }
+  //     })
+  //     .then(res => {
+  //       console.log(res.data);
+  //       dispatch(userInfoSlice.actions.revise(res.data));
+  //       dispatch(loginStatusSlice.actions.login(true));
+  //       dispatch(todoInfoSlice.actions.register(res.data.username))
+  //       setIsAlight(true);
+  //       router.push('/');
+  //     })
+  //   }
+  // }, [])
+
   return (
     <LoginContainer className="login__container">
+      <SnsLoginWrapper>
+        <SnsLoginTitle>SNS 로그인으로 간편하게 이용하세요!</SnsLoginTitle>
+        <SnsLoginContainer>
+          <div onClick={() => signIn()}><img src='/images/github_logo.png' /></div>
+        </SnsLoginContainer>
+      </SnsLoginWrapper>
       <LoginForm 
         action="" 
         method="get" 

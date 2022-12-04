@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Button from "../atoms/button";
 import axios from "axios";
 
-const DueDateWrapper = styled.div`
+const DueDateContainer = styled.div`
   padding: 20px 0;
   display:flex;
   border-top: 2px solid #f5f5f5;
@@ -23,6 +23,14 @@ const DueDateWrapper = styled.div`
   }
 `;
 
+const DueDateWrapper = styled.div`
+  display:flex;
+`;
+
+const DueDateLabel = styled.div`
+  width:25%;
+`;
+
 const ButtonWrapper = styled.div`
   width:100%;
   height:40px;
@@ -35,7 +43,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const StatusWrapper = styled.div`
-  width: 20%;
+  height:20px;
   display:flex;
   align-items: center;
 
@@ -61,7 +69,14 @@ const StatusWrapper = styled.div`
   }
 `;
 
-export default function TodoDetail({data, openModalHandler, status}) {
+const StatusChangeSpan = styled.span`
+  width:80%;
+  padding-left: 10px;
+  display:flex;
+  align-items: center;
+`;
+
+export default function TodoDetail({data, openModalHandler, status, changeStatus}) {
   const username = useSelector(state => state.userInfo.value.username);
   const dispatch = useDispatch();
 
@@ -71,6 +86,13 @@ export default function TodoDetail({data, openModalHandler, status}) {
 
   // 현재 날짜 받아오기 (출처 - https://gurtn.tistory.com/65)
   const todayDate = new Date().toLocaleDateString('ko').replace(/\./g, '').replace(/\s/g, '-');
+
+  // 상태 바꾸기
+  const [isChangeStatusMode, setIsChangeStatusMode] = useState(false);
+  const changeStatusCustom = (from, to) => {
+    changeStatus(from, to);
+    setIsChangeStatusMode(!isChangeStatusMode)
+  }
 
   // 생성하기 버튼
   const createButtonHandler = async() => {
@@ -131,14 +153,64 @@ export default function TodoDetail({data, openModalHandler, status}) {
     openModalHandler();
   };
 
+  // 상태 변경을 위한 객체들을 담은 배열
+  const statusChangeArr = [
+    {
+      status: 'todolist',
+      to: [
+        {name: 'inprogress', msg: 'In Progress로 변경'},
+        {name: 'done', msg: 'Done으로 변경'}
+      ],
+    },
+    {
+      status: 'inprogress',
+      to: [
+        {name: 'todolist', msg: 'To Do로 변경'},
+        {name: 'done', msg: 'Done으로 변경'}
+      ],
+    },
+    {
+      status: 'done',
+      to: [
+        {name: 'todolist', msg: 'To Do로 변경'},
+        {name: 'inprogress', msg: 'In Progress로 변경'}
+      ],
+    }
+  ]
+
   return (
     <>
     {data
       ? (
-        <StatusWrapper>
+        <StatusWrapper onClick={() => setIsChangeStatusMode(!isChangeStatusMode)}>
           <div className={status === 'todolist' ? "status__todo" : null}></div>
           <div className={status === 'inprogress' ? "status__inprogress" : null}></div>
           <div className={status === 'done' ? "status__done" : null}></div>
+          {isChangeStatusMode
+            ? (
+              <StatusChangeSpan>
+                {statusChangeArr.map((el) => {
+                  return status === el.status 
+                    ? el.to.map((to, idx) => {
+                      return (
+                        <Button 
+                          key={idx} 
+                          buttonEvent={() => changeStatusCustom(status, to.name)} 
+                          buttonName={to.msg} 
+                          width='150px' 
+                          height='20px' 
+                          fontWeight='500' 
+                          fontSize='14px' 
+                          margin='0 5px' 
+                        />
+                      )
+                    })
+                    : null 
+                  })
+                }
+              </StatusChangeSpan>
+            )
+            : null}
         </StatusWrapper>
       )
       : null }
@@ -151,9 +223,13 @@ export default function TodoDetail({data, openModalHandler, status}) {
         height='70px'
         padding='20px 0'
       />
-      <DueDateWrapper>
-        <div>작성일 : {data ? data.registration : todayDate}</div>
-        <div>마감일 :&nbsp;
+      <DueDateContainer>
+        <DueDateWrapper>
+          <DueDateLabel>작성일 :</DueDateLabel>
+          {data ? data.registration : todayDate}
+        </DueDateWrapper>
+        <DueDateWrapper>
+          <DueDateLabel>마감일 :</DueDateLabel>
           <ClickToEditInputText
             value={deadline}
             handleValueChange={(newValue) => setDeadline(newValue)}
@@ -163,8 +239,8 @@ export default function TodoDetail({data, openModalHandler, status}) {
             width='auto'
             height='auto'
           />
-        </div>
-      </DueDateWrapper>
+        </DueDateWrapper>
+      </DueDateContainer>
       <ClickToEditTextarea 
         value={content}
         handleValueChange={(newValue) => setContent(newValue)}

@@ -67,35 +67,26 @@ export default function TodoElement({data, status}) {
     .catch(error => console.error(error));
   };
 
-  const changeStatusButtonHandler = async () => {
+  const changeStatus = async (from, to) => {
+    await axios
+    .put(`http://localhost:4000/todoinfo/status/${username}`, {
+      query: {
+        id: data.id,
+        from,
+        to
+      }
+    })
+    .then(res => {
+      dispatch(todoInfoSlice.actions.read(res.data));
+    })
+    .catch(error => console.error(error));
+  }
+
+  const changeStatusButtonHandler = () => {
     if (status === 'todolist') {
-      await axios
-      .put(`http://localhost:4000/todoinfo/status/${username}`, {
-        query: {
-          id: data.id,
-          from: 'todolist',
-          to: 'inprogress'
-        }
-      })
-      .then(res => {
-        dispatch(todoInfoSlice.actions.read(res.data));
-      })
-      .catch(error => console.error(error));
-
+      changeStatus(status, 'inprogress');
     } else if (status === 'inprogress') {
-      await axios
-      .put(`http://localhost:4000/todoinfo/status/${username}`, {
-        query: {
-          id: data.id,
-          from: 'inprogress',
-          to: 'done'
-        }
-      })
-      .then(res => {
-        dispatch(todoInfoSlice.actions.read(res.data));
-      })
-      .catch(error => console.error(error));
-
+      changeStatus(status, 'done');
     } else if (status === 'done') {
       deleteButtonHandler();
     }
@@ -119,7 +110,7 @@ export default function TodoElement({data, status}) {
       <Modal 
         isModalOpen={isModalOpen} 
         openModalHandler={openModalHandler} 
-        modalCont={<TodoDetail data={data} openModalHandler={openModalHandler} status={status}/>} 
+        modalCont={<TodoDetail data={data} openModalHandler={openModalHandler} status={status} changeStatus={changeStatus}/>} 
       />
     </ToDoContainer>
   )

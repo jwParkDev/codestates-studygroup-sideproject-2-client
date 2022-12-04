@@ -11,6 +11,9 @@ import Button from '../components/atoms/button';
 import { Modal } from '../components/atoms/Modal';
 import TodoDetail from '../components/blocks/TodoDetail';
 
+// nextauth를 사용하기 위함
+import { useSession, signOut } from 'next-auth/react';
+
 const LifeQuotesWrapper = styled.div`
   width:1000px;
   height:100px;
@@ -43,6 +46,9 @@ const CreateButtonWrapper = styled.div`
 `;
 
 export default function Home() {
+  // nextauth를 사용하기 위함
+  const {data : session} = useSession();
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -69,7 +75,7 @@ export default function Home() {
       });
     }
   }, [])
-
+  
   return (
     <div>
       {loginStatus

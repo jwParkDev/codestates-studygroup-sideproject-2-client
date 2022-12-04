@@ -15,6 +15,11 @@ const TextareaEdit = styled.textarea`
   min-height: ${props => props.textareaHeight || '100px'};
 `;
 
+const TextareaDiv = styled.div`
+  width:100%;
+  height:100%;
+`;
+
 const ClickToEditTextarea = ({ value, handleValueChange, fontSize, fontWeight, textareaHeight }) => {
   const inputEl = useRef(null);
   const [isEditMode, setEditMode] = useState(false);
@@ -64,12 +69,12 @@ const ClickToEditTextarea = ({ value, handleValueChange, fontSize, fontWeight, t
           textareaHeight={textareaHeight}
         />
       ) : (
-        <span
+        <TextareaDiv
           // 클릭하면 Edit가 가능한 상태로 변경
           onClick={handleClick}
         >
           {newValue}
-        </span>
+        </TextareaDiv>
       )}
     </TextareaBox>
   );

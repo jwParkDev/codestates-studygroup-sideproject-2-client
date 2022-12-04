@@ -64,7 +64,6 @@ const PageTitle = styled.h2`
 const Header = () => {
   const tabMenuArr = [
     {'tabName' : '홈', 'goToUrl': '/'},
-    {'tabName' : '전체목록', 'goToUrl': '/alllist'},
     {'tabName' : '캘린더', 'goToUrl': '/calendar'}
   ];
 

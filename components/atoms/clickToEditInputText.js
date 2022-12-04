@@ -15,6 +15,10 @@ const InputEdit = styled.input`
   font-weight: ${props => props.fontWeight || 'normal'};
 `;
 
+const InputDiv = styled.div`
+  width:100%;
+`;
+
 const ClickToEditInputText = ({ value, handleValueChange, type, fontSize, fontWeight, width, height, padding }) => {
   const inputEl = useRef(null);
   const [isEditMode, setEditMode] = useState(false);
@@ -64,12 +68,12 @@ const ClickToEditInputText = ({ value, handleValueChange, type, fontSize, fontWe
           fontWeight={fontWeight}
         />
       ) : (
-        <span
+        <InputDiv
           // 클릭하면 Edit가 가능한 상태로 변경
           onClick={handleClick}
         >
           {newValue}
-        </span>
+        </InputDiv>
       )}
     </InputBox>
   );
