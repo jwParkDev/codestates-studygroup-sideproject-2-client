@@ -1,6 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
 
-const InputLayoutDiv = styled.div`
+const InputLayoutDiv = styled.div<{ width: string }>`
   display: flex;
   align-items: center;
   width: ${(props) => props.width || '30rem'};
@@ -18,9 +19,17 @@ const InputWrapperSpan = styled.span`
   width: 80%;
 `;
 
-export default function InputLayout(props) {
+interface InputLayoutPropsTypes {
+  for: string,
+  label: string,
+  children: React.ReactNode,
+  className?: string,
+  width?: string,
+}
+
+export default function InputLayout(props:InputLayoutPropsTypes):React.ReactElement {
   return (
-    <InputLayoutDiv className={`${props.className}`} width={props.width}>
+    <InputLayoutDiv className={props.className} width={props.width}>
       <InputLabel htmlFor={props.for}>{props.label}</InputLabel>
       <InputWrapperSpan>{props.children}</InputWrapperSpan>
     </InputLayoutDiv>

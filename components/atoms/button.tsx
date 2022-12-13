@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { StyleBase } from '../Interface';
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<StyleBase>`
   width: ${(props) => props.width || `50%`};
   background: ${props => props.backgroundColor || '#E0422D'};
   color: ${props => props.color || '#fff' };
@@ -18,7 +19,14 @@ const StyledButton = styled.button`
   };
 `;
 
-export default function Button(props) {
+interface ButtonPropsTypes extends StyleBase {
+  className?: string,
+  type?: "button" | "submit" | "reset",
+  buttonName: string,
+  buttonEvent?(e?: React.MouseEvent<HTMLElement>): void,
+}
+
+export default function Button(props:ButtonPropsTypes): React.ReactElement {
   return (
     <StyledButton
       onClick={props.buttonEvent}

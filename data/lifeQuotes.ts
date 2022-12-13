@@ -1,4 +1,9 @@
-const lifeQuotes = [
+interface LifeQuotesList {
+  title : string,
+  teller : string
+}
+
+const lifeQuotes:Array<LifeQuotesList> = [
   {
     title: '가장 큰 영광은 한 번도 실패하지 않음이 아니라, 실패할 때마다 다시 일어서는데에 있다.',
     teller: '공자'

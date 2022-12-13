@@ -1,4 +1,10 @@
-const gender = [
+interface GenderList {
+  id : string,
+  value : string,
+  name : string
+}
+
+const gender:Array<GenderList> = [
   {
     id: 'gender1',
     value: 'female',

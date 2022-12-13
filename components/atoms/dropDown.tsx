@@ -1,6 +1,8 @@
+import React from 'react';
 import styled from 'styled-components';
+import { StyleBase, RegisterType } from '../Interface';
 
-const StyledDropDown = styled.select`
+const StyledDropDown = styled.select<StyleBase>`
   border: 1px solid #bbb;
   border-radius: 5px;
   height: ${props => props.height || '2rem'};
@@ -8,7 +10,15 @@ const StyledDropDown = styled.select`
   margin: ${(props) => props.margin};
 `;
 
-export default function DropDown(props) {
+interface DropDownPropsTypes extends StyleBase {
+  required?: boolean,
+  defaultValue?: string,
+  name?: string,
+  optionList: Array<{optionValue: string, id: string | number, optionName: string}>,
+  register(name:string): any,
+}
+
+export default function DropDown(props:DropDownPropsTypes):React.ReactElement {
   return (
     <StyledDropDown
       required={props.required}

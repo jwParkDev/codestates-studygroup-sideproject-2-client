@@ -15,8 +15,10 @@ import gender from '../../data/gender';
 import emailForm from '../../data/emailForm';
 import axios from 'axios';
 
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../ducks/hooks';
 import { userInfoSlice } from '../../ducks/slices';
+import { FormValue } from '../../components/Interface';
 
 const PageTitle = styled.h2`
   text-align: center;
@@ -51,15 +53,16 @@ const ButtonContainer = styled.div`
 
 export default function MyPage() {
   // react-hook-form을 사용하기 위해 변수 받아오기
-  const { register, handleSubmit, watch, setValue } = useForm();
+  const { register, handleSubmit, watch, setValue } = useForm<FormValue>();
 
+  
   // e-mail 직접입력 여부 및 처리를 위한 watch
   const isDirectlyInput = watch('email_back_select');
 
   // RTK state 내 username 가져오기
-  const userInfo = useSelector(state => state.userInfo.value);
-  const loginStatus = useSelector(state => state.loginStatus.value);
-  const dispatch = useDispatch();
+  const userInfo = useAppSelector(state => state.userInfo.value);
+  const loginStatus = useAppSelector(state => state.loginStatus.status);
+  const dispatch = useAppDispatch();
 
   // 수정하기 버튼 구현
   const reviseButtonHandler = (data) => {
@@ -99,7 +102,7 @@ export default function MyPage() {
         phone: [countryCode, `${phone_front}-${phone_middle}-${phone_back}`],
         introduction,
       };
-      setValue("email_back", resultData.email.split('@')[1])
+      setValue("email_back", resultData.email.split('@')[1]);
       axios({
         method: 'put',
         url: `http://localhost:4000/userinfo/${userInfo.username}`,
@@ -126,7 +129,7 @@ export default function MyPage() {
         <PageTitle>마이페이지</PageTitle>
         <MyPageContainer className="signup__container">
           <MyPageForm onSubmit={handleSubmit(data => reviseButtonHandler(data))}>
-            <InputLayout className="form__input--username" label="아이디">
+            <InputLayout className="form__input--username" for="username" label="아이디">
               <TextInput
                 type="text"
                 name="username"
@@ -136,7 +139,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--password" label="비밀번호">
+            <InputLayout className="form__input--password" for="password" label="비밀번호">
               <TextInput
                 type="password"
                 name="password"
@@ -146,7 +149,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--birth" label="생년월일">
+            <InputLayout className="form__input--birth" for="dateOfBirth" label="생년월일">
               <TextInput
                 type="date"
                 name="dateOfBirth"
@@ -155,7 +158,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--gender" label="성별">
+            <InputLayout className="form__input--gender" for="gender" label="성별">
               <RadioButton
                 radioName="성별"
                 name="gender"
@@ -165,7 +168,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--email" label="이메일">
+            <InputLayout className="form__input--email" for="email_front" label="이메일">
               <TextInput
                 name="email_front"
                 defaultValue={userInfo.email.split('@')[0]}
@@ -191,7 +194,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--phone" label="전화번호">
+            <InputLayout className="form__input--phone" for="countryCode" label="전화번호">
               <DropDown
                 optionList={countryCode}
                 defaultValue={userInfo.phone[0]}
@@ -225,7 +228,7 @@ export default function MyPage() {
               />
             </InputLayout>
 
-            <InputLayout className="form__input--introduction" label="자기소개">
+            <InputLayout className="form__input--introduction" for="introduction" label="자기소개">
               <TextArea
                 name="introduction"
                 defaultValue={userInfo.introduction}

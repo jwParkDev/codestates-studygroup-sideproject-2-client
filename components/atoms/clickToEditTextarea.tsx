@@ -1,14 +1,20 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { StyleBase } from '../Interface';
 
-const TextareaBox = styled.div`
+interface TextareaEditTypes extends StyleBase {
+  type?: string,
+  textareaHeight?: string;
+}
+
+const TextareaBox = styled.div<StyleBase>`
   width:100%;
   height: ${props => props.height || '30px'};
   font-size: ${props => props.fontSize || '16px'};
   font-weight: ${props => props.fontWeight || 'normal'};
 `;
 
-const TextareaEdit = styled.textarea`
+const TextareaEdit = styled.textarea<TextareaEditTypes>`
   width:100%;
   font-size: ${props => props.fontSize || '16px'};
   font-weight: ${props => props.fontWeight || 'normal'};
@@ -20,7 +26,14 @@ const TextareaDiv = styled.div`
   height:100%;
 `;
 
-const ClickToEditTextarea = ({ value, handleValueChange, fontSize, fontWeight, textareaHeight }) => {
+interface ClickToEditTextareaPropsType extends StyleBase{
+  value: string,
+  handleValueChange(newValue:string): void,
+  type?: string,
+  textareaHeight?: string,
+}
+
+const ClickToEditTextarea = ({ value, handleValueChange, fontSize, fontWeight, textareaHeight }: ClickToEditTextareaPropsType):React.ReactElement => {
   const inputEl = useRef(null);
   const [isEditMode, setEditMode] = useState(false);
   const [newValue, setNewValue] = useState(value);
@@ -35,18 +48,18 @@ const ClickToEditTextarea = ({ value, handleValueChange, fontSize, fontWeight, t
     setNewValue(value);
   }, [value]);
 
-  const handleClick = () => {
+  const handleClick = ():void => {
     // isEditMode 상태를 변경
     setEditMode(!isEditMode);
   };
 
-  const handleBlur = () => {
+  const handleBlur = ():void => {
     // Edit가 불가능한 상태로 변경
     handleValueChange(newValue);
     setEditMode(!isEditMode);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>):void => {
     // 저장된 value를 업데이트
     setNewValue(e.target.value);
   };

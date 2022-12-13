@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../ducks/hooks';
 import axios from 'axios';
 
 import TodoList from '../components/blocks/TodoList';
@@ -45,22 +46,22 @@ const CreateButtonWrapper = styled.div`
   justify-content: right;
 `;
 
-export default function Home() {
+export default function Home(): React.ReactElement {
   // nextauth를 사용하기 위함
   const {data : session} = useSession();
 
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const loginStatus = useSelector(state => state.loginStatus.value);
-  const userInfo = useSelector(state => state.userInfo.value);
-  const todoInfo = useSelector(state => state.todoInfo.value);
+  const loginStatus = useAppSelector(state => state.loginStatus.status);
+  const userInfo = useAppSelector(state => state.userInfo.value);
+  const todoInfo = useAppSelector(state => state.todoInfo.value);
 
   const randomLifeQuotes = lifeQuotes[Math.floor(Math.random() * lifeQuotes.length)];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModalHandler = () => {
+  const openModalHandler = ():void => {
     setIsModalOpen(!isModalOpen);
   };
 
@@ -92,8 +93,9 @@ export default function Home() {
       <Modal 
         isModalOpen={isModalOpen} 
         openModalHandler={openModalHandler} 
-        modalCont={<TodoDetail openModalHandler={openModalHandler} />} 
-      />
+      >
+        <TodoDetail openModalHandler={openModalHandler} />
+      </Modal>
       {todoInfo ? <TodoList /> : null}
     </div>
   )

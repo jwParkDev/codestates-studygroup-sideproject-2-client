@@ -1,11 +1,12 @@
 import styled from "styled-components"
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../../ducks/hooks";
 import { Modal } from "../atoms/Modal";
-import TodoDetail from "../blocks/TodoDetail";
+import TodoDetail from "./TodoDetail";
 import Button from "../atoms/button";
 import axios from "axios";
-import { todoInfoSlice } from "../../ducks/slices";
+import { todoInfoSlice, TodoInfoStatusArrObj } from "../../ducks/slices";
 
 const ToDoContainer = styled.div`
   display:flex;
@@ -42,13 +43,18 @@ const DueDatediv = styled.div`
   color:#7d7d7d;
 `;
 
-export default function TodoElement({data, status}) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const username = useSelector(state => state.userInfo.value.username);
+interface TodoElementPropsTypes {
+  data: TodoInfoStatusArrObj,
+  status: string
+}
 
-  const dispatch = useDispatch();
+export default function TodoElement({data, status}: TodoElementPropsTypes): React.ReactElement {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const username = useAppSelector(state => state.userInfo.value.username);
+
+  const dispatch = useAppDispatch();
   
-  const openModalHandler = () => {
+  const openModalHandler = ():void => {
     setIsModalOpen(!isModalOpen);
   };
 
@@ -67,7 +73,7 @@ export default function TodoElement({data, status}) {
     .catch(error => console.error(error));
   };
 
-  const changeStatus = async (from, to) => {
+  const changeStatus = async (from: string, to:string) => {
     await axios
     .put(`http://localhost:4000/todoinfo/status/${username}`, {
       query: {
@@ -82,7 +88,7 @@ export default function TodoElement({data, status}) {
     .catch(error => console.error(error));
   }
 
-  const changeStatusButtonHandler = () => {
+  const changeStatusButtonHandler = ():void => {
     if (status === 'todolist') {
       changeStatus(status, 'inprogress');
     } else if (status === 'inprogress') {
@@ -110,8 +116,9 @@ export default function TodoElement({data, status}) {
       <Modal 
         isModalOpen={isModalOpen} 
         openModalHandler={openModalHandler} 
-        modalCont={<TodoDetail data={data} openModalHandler={openModalHandler} status={status} changeStatus={changeStatus}/>} 
-      />
+      >
+        <TodoDetail data={data} openModalHandler={openModalHandler} status={status} changeStatus={changeStatus}/>
+      </Modal>
     </ToDoContainer>
   )
 }

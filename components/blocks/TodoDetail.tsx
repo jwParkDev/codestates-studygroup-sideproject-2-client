@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { useSelector, useDispatch } from 'react-redux';
-import { todoInfoSlice } from "../../ducks/slices";
+// import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../../ducks/hooks";
+import { todoInfoSlice, TodoInfoStatusArrObj } from "../../ducks/slices";
 
 import ClickToEditInputText from "../atoms/clickToEditInputText";
 import ClickToEditTextarea from "../atoms/clickToEditTextarea";
@@ -76,9 +77,16 @@ const StatusChangeSpan = styled.span`
   align-items: center;
 `;
 
-export default function TodoDetail({data, openModalHandler, status, changeStatus}) {
-  const username = useSelector(state => state.userInfo.value.username);
-  const dispatch = useDispatch();
+interface TodoDetailPropsTypes {
+  data?: TodoInfoStatusArrObj,
+  status?: string,
+  openModalHandler?(): void,
+  changeStatus?(from: string, to: string): Promise<void>
+}
+
+export default function TodoDetail({data, openModalHandler, status, changeStatus}: TodoDetailPropsTypes): React.ReactElement {
+  const username = useAppSelector(state => state.userInfo.value.username);
+  const dispatch = useAppDispatch();
 
   const [title, setTitle] = useState(data ? data.title : '제목');
   const [content, setContent] = useState(data ? data.content : '내용');
@@ -89,7 +97,7 @@ export default function TodoDetail({data, openModalHandler, status, changeStatus
 
   // 상태 바꾸기
   const [isChangeStatusMode, setIsChangeStatusMode] = useState(false);
-  const changeStatusCustom = (from, to) => {
+  const changeStatusCustom = (from: string, to: string) => {
     changeStatus(from, to);
     setIsChangeStatusMode(!isChangeStatusMode)
   }

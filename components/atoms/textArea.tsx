@@ -1,6 +1,8 @@
+import React from 'react';
 import styled from 'styled-components';
+import { StyleBase, RegisterType } from '../Interface';
 
-const StyledTextarea = styled.textarea`
+const StyledTextarea = styled.textarea<StyleBase>`
   width: 100%;
   height: ${(props) => props.height};
   padding: 0.3rem;
@@ -8,7 +10,15 @@ const StyledTextarea = styled.textarea`
   border-radius: 5px;
 `;
 
-export default function TextArea(props) {
+interface TextAreaPropsTypes extends StyleBase {
+  name: string,
+  placeholder?: string,
+  defaultValue?: string,
+  onChangeEvent?: React.ChangeEventHandler<HTMLInputElement>,
+  register(name:string): any,
+}
+
+export default function TextArea(props:TextAreaPropsTypes):React.ReactElement {
   return (
     <StyledTextarea
       id={props.name}

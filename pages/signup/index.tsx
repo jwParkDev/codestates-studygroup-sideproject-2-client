@@ -13,7 +13,10 @@ import TextInput from '../../components/atoms/textInput';
 import countryCode from '../../data/countryCode';
 import gender from '../../data/gender';
 import emailForm from '../../data/emailForm';
+
 import axios from 'axios';
+import { FormValue } from '../../components/Interface';
+
 
 const SignUpContainer = styled.div`
   width: 30rem;
@@ -46,13 +49,13 @@ export default function SignUp() {
   const router = useRouter();
 
   // react-hook-form을 사용하기 위해 변수 받아오기
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch } = useForm<FormValue>();
 
   // 아이디 유효성 검사 및 중복 확인
   const username = watch('username');
   const [isAvailableUsername, setIsAvailableUsername] = useState(true);
   const [isDuplicatedUsername, setIsDuplicatedUsername] = useState(false);
-  const duplicateCheckHandler = (e) => {
+  const duplicateCheckHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (/^(?=.*?[0-9])(?=.*?[A-Za-z])[A-Za-z0-9]{5,}$/.test(username)) {
       setIsAvailableUsername(true);
@@ -144,7 +147,7 @@ export default function SignUp() {
     <>
       <SignUpContainer className="signup__container">
         <SignUpForm onSubmit={handleSubmit(data => signupButtonHandler(data))}>
-          <InputLayout className="form__input--username" label="아이디">
+          <InputLayout className="form__input--username" for="username" label="아이디">
             <TextInput
               type="text"
               name="username"
@@ -164,11 +167,11 @@ export default function SignUp() {
             ) : null
           ) : (
             <CautionMessage>
-              아이디는 영문과 숫자를 포함한 5자 이상으로 입력해주세요.
+              특수문자를 제외하고 영문과 숫자를 포함한 5자 이상으로 입력해주세요.
             </CautionMessage>
           )}
 
-          <InputLayout className="form__input--password" label="비밀번호">
+          <InputLayout className="form__input--password" for="password" label="비밀번호">
             <TextInput
               type="password"
               name="password"
@@ -177,7 +180,7 @@ export default function SignUp() {
             />
           </InputLayout>
 
-          <InputLayout className="form__input--birth" label="생년월일">
+          <InputLayout className="form__input--birth" for="dateOfBirth" label="생년월일">
             <TextInput
               type="date"
               name="dateOfBirth"
@@ -185,7 +188,7 @@ export default function SignUp() {
             />
           </InputLayout>
 
-          <InputLayout className="form__input--gender" label="성별">
+          <InputLayout className="form__input--gender" for="gender" label="성별">
             <RadioButton
               radioName="성별"
               name="gender"
@@ -194,7 +197,7 @@ export default function SignUp() {
             />
           </InputLayout>
 
-          <InputLayout className="form__input--email" label="이메일">
+          <InputLayout className="form__input--email" for="email_front" label="이메일">
             <TextInput
               name="email_front"
               type="text"
@@ -217,7 +220,7 @@ export default function SignUp() {
             />
           </InputLayout>
 
-          <InputLayout className="form__input--phone" label="전화번호">
+          <InputLayout className="form__input--phone" for="countryCode" label="전화번호">
             <DropDown
               optionList={countryCode}
               name="countryCode"
@@ -246,7 +249,7 @@ export default function SignUp() {
             />
           </InputLayout>
 
-          <InputLayout className="form__input--introduction" label="자기소개">
+          <InputLayout className="form__input--introduction" for="introduction" label="자기소개">
             <TextArea
               name="introduction"
               placeholder="간단한 자기소개를 입력해주세요."

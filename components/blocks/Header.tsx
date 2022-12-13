@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../ducks/hooks';
 import { userInfoSlice, loginStatusSlice } from '../../ducks/slices';
+import React from 'react';
 
 const StyeldHeader = styled.header`
   width:100%;
@@ -61,18 +63,18 @@ const PageTitle = styled.h2`
   text-align:center;
 `;
 
-const Header = () => {
+const Header = ():React.ReactElement => {
   const tabMenuArr = [
     {'tabName' : '홈', 'goToUrl': '/'},
     {'tabName' : '캘린더', 'goToUrl': '/calendar'}
   ];
 
   const router = useRouter();
-  const loginStatus = useSelector(state => state.loginStatus.value);
-  const dispatch = useDispatch();
+  const loginStatus = useAppSelector(state => state.loginStatus.status);
+  const dispatch = useAppDispatch();
 
   // 로그아웃 버튼 구현
-  const logoutHandler = (e) => {
+  const logoutHandler = (e: React.MouseEvent<HTMLElement>) => {
     // 일단 Link tag(a tag)의 기본적인 기능을 막고,
     e.preventDefault();
     // 메인페이지(-> 로그인 페이지)로 이동시켜버리자.

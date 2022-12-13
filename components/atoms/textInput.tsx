@@ -1,6 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
+import { StyleBase } from '../Interface';
+// import { FieldValues, UseFormRegister } from "react-hook-form";
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<StyleBase>`
   width: 100%;
   height: ${props => props.height || '2rem'};
   padding: ${props => props.padding || '0.3rem'};
@@ -11,7 +14,21 @@ const StyledInput = styled.input`
   font-size: ${props => props.fontSize || '16px'};
 `;
 
-export default function TextArea(props) {
+interface TextInputPropsTypes extends StyleBase {
+  id?: string,
+  type: string,
+  name: string,
+  value?: string,
+  defaultValue?: string,
+  placeholder?: string,
+  required?: boolean,
+  onChangeEvent?: React.ChangeEventHandler<HTMLInputElement>,
+  disabled?: boolean,
+  onKeyDownEvent?: React.KeyboardEventHandler<HTMLInputElement>,
+  register(name: string): any,
+}
+
+export default function TextInput(props: TextInputPropsTypes):React.ReactElement {
   return (
     <StyledInput
       type={props.type}

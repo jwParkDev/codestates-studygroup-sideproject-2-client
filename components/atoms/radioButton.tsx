@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { RegisterType } from '../Interface';
 
 const StyledRadioSpan = styled.span`
   display: flex;
@@ -11,7 +12,21 @@ const StyledRadioInput = styled.input`
   height: 1.2rem;
 `;
 
-export default function RadioButton(props) {
+interface RadioListObjTypes {
+  id: string | number,
+  value: string,
+  name: string,
+}
+
+interface RadionButtonPropsTypes  {
+  radioList: Array<RadioListObjTypes>
+  name: string,
+  defaultValue?: string,
+  radioName: string,
+  register(name:string): any,
+}
+
+export default function RadioButton(props:RadionButtonPropsTypes):React.ReactElement {
   return (
     <>
       {props.radioList.map((el) => {

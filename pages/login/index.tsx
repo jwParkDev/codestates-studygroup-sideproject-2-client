@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../ducks/hooks';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -9,9 +10,10 @@ import InputLayout from '../../components/blocks/inputLayout';
 import TextInput from '../../components/atoms/textInput';
 import Button from '../../components/atoms/button';
 import { userInfoSlice, loginStatusSlice, todoInfoSlice } from '../../ducks/slices';
+import { FormValue } from '../../components/Interface';
 
 // nextauth 사용을 위함
-import { useSession, signIn } from 'next-auth/react';
+// import { useSession, signIn } from 'next-auth/react';
 
 const LoginContainer = styled.div`
   width: 20rem;
@@ -70,18 +72,18 @@ const CautionMessage = styled.div`
 
 export default function Login() {
   // nextauth 사용을 위함
-  const {data : session} = useSession();
+  // const {data : session} = useSession();
   // console.log(session);
 
   // 로그인 후 페이지 전환을 하기 위해 react-router-dom의 useNavigate hook을 사용
   const router = useRouter();
 
   // react-hook-form을 사용하기 위해 변수 받아오기
-  const {register, handleSubmit } = useForm();
+  const {register, handleSubmit } = useForm<FormValue>();
 
   // RTK를 사용하여 사용자 state를 update하기 위해 dispatch 선언
-  const dispatch = useDispatch();
-  const loginStatus = useSelector(state => state.loginStatus.value)
+  const dispatch = useAppDispatch();
+  const loginStatus = useAppSelector(state => state.loginStatus.status)
 
   // 아이디 혹은 비밀번호가 잘못되었을 때의 모달을 위한 state
   const [isAlight, setIsAlight] = useState(true);
@@ -137,12 +139,12 @@ export default function Login() {
 
   return (
     <LoginContainer className="login__container">
-      <SnsLoginWrapper>
+      {/* <SnsLoginWrapper>
         <SnsLoginTitle>SNS 로그인으로 간편하게 이용하세요!</SnsLoginTitle>
         <SnsLoginContainer>
           <div onClick={() => signIn()}><img src='/images/github_logo.png' /></div>
         </SnsLoginContainer>
-      </SnsLoginWrapper>
+      </SnsLoginWrapper> */}
       <LoginForm 
         action="" 
         method="get" 

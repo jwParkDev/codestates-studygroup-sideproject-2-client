@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const ModalBackdrop = styled.div`
@@ -33,15 +34,21 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const Modal = ({isModalOpen, openModalHandler, modalCont}) => {
+interface ModalPropsTypes {
+  children: React.ReactNode,
+  isModalOpen: boolean,
+  openModalHandler():void,
+}
+
+export const Modal = (props:ModalPropsTypes):React.ReactElement | null => {
   return (
     <>
-      {isModalOpen ? (
+      {props.isModalOpen ? (
         <>
-          <ModalBackdrop onClick={openModalHandler}>
+          <ModalBackdrop onClick={props.openModalHandler}>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <CloseButton onClick={openModalHandler} >&times;</CloseButton>
-              {modalCont}
+              <CloseButton onClick={props.openModalHandler} >&times;</CloseButton>
+              {props.children}
             </ModalView>
           </ModalBackdrop>
         </>

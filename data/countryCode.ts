@@ -1,4 +1,10 @@
-const countryCode = [
+interface CountryCodeObj {
+  id : string,
+  optionName : string,
+  optionValue : string,
+}
+
+const countryCode:Array<CountryCodeObj> = [
   {
     id: 'country0',
     optionName: '국가',

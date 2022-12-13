@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { StyleBase } from '../Interface';
 
-const InputBox = styled.div`
+const InputBox = styled.div<StyleBase>`
   width: ${props => props.width || '100%'};
   height: ${props => props.height || '30px'};
   font-size: ${props => props.fontSize || '16px'};
@@ -9,7 +10,7 @@ const InputBox = styled.div`
   padding: ${props => props.padding || '0'};
 `;
 
-const InputEdit = styled.input`
+const InputEdit = styled.input<StyleBase>`
   width: ${props => props.width || '100%'};
   font-size: ${props => props.fontSize || '16px'};
   font-weight: ${props => props.fontWeight || 'normal'};
@@ -19,7 +20,13 @@ const InputDiv = styled.div`
   width:100%;
 `;
 
-const ClickToEditInputText = ({ value, handleValueChange, type, fontSize, fontWeight, width, height, padding }) => {
+interface ClickToEditInputTextPropsType extends StyleBase{
+  value: string,
+  handleValueChange(newValue:string): void,
+  type?: string,
+}
+
+const ClickToEditInputText = ({ value, handleValueChange, type, fontSize, fontWeight, width, height, padding }: ClickToEditInputTextPropsType): React.ReactElement => {
   const inputEl = useRef(null);
   const [isEditMode, setEditMode] = useState(false);
   const [newValue, setNewValue] = useState(value);
@@ -34,18 +41,18 @@ const ClickToEditInputText = ({ value, handleValueChange, type, fontSize, fontWe
     setNewValue(value);
   }, [value]);
 
-  const handleClick = () => {
+  const handleClick = ():void => {
     // isEditMode 상태를 변경
     setEditMode(!isEditMode);
   };
 
-  const handleBlur = () => {
+  const handleBlur = ():void => {
     // Edit가 불가능한 상태로 변경
     handleValueChange(newValue);
     setEditMode(!isEditMode);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>):void => {
     // 저장된 value를 업데이트
     setNewValue(e.target.value);
   };

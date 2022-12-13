@@ -24,10 +24,10 @@ const MainColorStrong = styled.strong`
   padding: 0.3rem;
 `;
 
-export default function SignUpCompleted() {
+export default function SignUpCompleted():React.ReactElement {
   const router = useRouter();
 
-  const goHomeButton = () => {
+  const goHomeButton = ():void => {
     router.push('/');
   };
 

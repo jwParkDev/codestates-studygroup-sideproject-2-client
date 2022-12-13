@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function MyApp({ Component, pageProps, session }) {
+function MyApp({ Component, pageProps, session }): React.ReactElement {
 
   return (
 	<>
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps, session }) {
         <Component {...pageProps} />
       </Provider>
     </SessionProvider>
-    {/* <Footer /> */}
+    <Footer />
 	</>
   )
 }

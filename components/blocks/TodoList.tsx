@@ -1,5 +1,6 @@
 import styled from "styled-components"
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector } from "../../ducks/hooks";
 
 import TodoElement from "./TodoElement"
 
@@ -31,8 +32,8 @@ const EmptyContDiv = styled.div`
   align-items: center;
 `;
 
-export default function TodoList() {
-  const todoInfo = useSelector(state => state.todoInfo.value);
+export default function TodoList():React.ReactElement {
+  const todoInfo = useAppSelector(state => state.todoInfo.value);
   return (
     <ListContainer>
       <ListWrapper>

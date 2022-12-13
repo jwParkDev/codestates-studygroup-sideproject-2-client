@@ -1,4 +1,10 @@
-const emailForm = [
+interface EmailFormList {
+  id : number,
+  optionValue : string,
+  optionName : string
+}
+
+const emailForm:Array<EmailFormList> = [
   {
     id: 0,
     optionValue: '',
