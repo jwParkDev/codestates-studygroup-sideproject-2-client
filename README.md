@@ -14,6 +14,11 @@
 - React-Hook-Form
 - NextAuth
 
+## 컴포넌트 구조
+- ```Atomic Design Pattern```을 참고하여 Atoms - Blocks - Pages로 구성하였습니다.
+- 전역 상태 관리를 위한 RTK Store와 Slice들은 Ducks 디렉토리에 따로 뺴놓았습니다.
+- 공통된 type 구조를 상속하여 재사용하기 위해 interface들을 모아놓은 파일을 따로 만들었습니다. 
+
 ## Server Repository
 https://github.com/jwParkDev/codestates-studygroup-sideproject-2-server
 
