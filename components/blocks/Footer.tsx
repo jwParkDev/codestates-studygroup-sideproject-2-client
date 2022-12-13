@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components"
+import { useEffect, useState } from 'react';
 
 const StyledFooter = styled.footer`
   width:100%;
   border-top: 1px solid #e5e5e5;
+  margin-top: 50px;
 `;
 
 const FooterContainer = styled.div`
@@ -35,7 +37,47 @@ const FooterInfoIcon = styled.li`
   }
 `;
 
-const FooterGoTopButton = styled.button``;
+const FooterGoTopButton = styled.button`
+  background-color: #fff;
+  border:0;
+  & > img {
+    width:30px;
+  }
+`;
+
+function TopButton() {
+  const [showButton, setShowButton] = useState(false);
+
+  const scrollToTop = () => {
+      window.scroll({
+          top: 0,
+          behavior: 'smooth'
+      })
+
+  }
+  useEffect(() => {
+      const handleShowButton = () => {
+          if (window.scrollY > 100) {
+              setShowButton(true)
+          } else {
+              setShowButton(false)
+          }
+      }
+
+      console.log(window.scrollY)
+      window.addEventListener("scroll", handleShowButton)
+      return () => {
+          window.removeEventListener("scroll", handleShowButton)
+      }
+  }, [])
+
+  return showButton && (
+      <div className="scroll__container">
+          <FooterGoTopButton onClick={scrollToTop} type="button"><img src='/images/top_button.png' alt='go to top button' /></FooterGoTopButton>
+      </div>
+
+  )
+}
 
 export default function Footer():React.ReactElement {
   return (
@@ -63,9 +105,7 @@ export default function Footer():React.ReactElement {
             </FooterInfoIcon>
           </FooterInfoIconWrapper>
         </FooterInfoWrapper>
-        <FooterGoTopButton>
-    
-        </FooterGoTopButton>
+          <TopButton />
       </FooterContainer>
     </StyledFooter>
   )
