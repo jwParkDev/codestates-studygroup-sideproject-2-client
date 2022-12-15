@@ -1,4 +1,5 @@
 import React from 'react';
+import { RegisterOptions } from 'react-hook-form';
 import styled from 'styled-components';
 import { StyleBase } from '../Interface';
 // import { FieldValues, UseFormRegister } from "react-hook-form";
@@ -25,8 +26,11 @@ interface TextInputPropsTypes extends StyleBase {
   onChangeEvent?: React.ChangeEventHandler<HTMLInputElement>,
   disabled?: boolean,
   onKeyDownEvent?: React.KeyboardEventHandler<HTMLInputElement>,
-  register(name: string): any,
+  // https://react-hook-form.com/api/useform/register
+  register(name: string, RegisterOptions?): ({ onChange, onBlur, name, ref }),
 }
+
+
 
 export default function TextInput(props: TextInputPropsTypes):React.ReactElement {
   return (
