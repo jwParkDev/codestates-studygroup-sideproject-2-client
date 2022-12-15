@@ -37,8 +37,8 @@ export default function TextInput(props: TextInputPropsTypes):React.ReactElement
     <StyledInput
       type={props.type}
       id={props.name}
-      name={props.name}
-      // name={props.register(props.name).name}
+      name={props.register(props.name).name}
+      // name={props.name}
       value={props.value}
       defaultValue={props.defaultValue}
       placeholder={props.placeholder}
