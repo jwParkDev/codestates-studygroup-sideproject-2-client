@@ -27,7 +27,7 @@ interface TextInputPropsTypes extends StyleBase {
   disabled?: boolean,
   onKeyDownEvent?: React.KeyboardEventHandler<HTMLInputElement>,
   // https://react-hook-form.com/api/useform/register
-  register(name: string, RegisterOptions?): ({ onChange, onBlur, name, ref }),
+  register(name: string, RegisterOptions?): ({ name: string }),
 }
 
 
@@ -38,6 +38,7 @@ export default function TextInput(props: TextInputPropsTypes):React.ReactElement
       type={props.type}
       id={props.name}
       name={props.name}
+      // name={props.register(props.name).name}
       value={props.value}
       defaultValue={props.defaultValue}
       placeholder={props.placeholder}
@@ -45,8 +46,6 @@ export default function TextInput(props: TextInputPropsTypes):React.ReactElement
       onChange={props.onChangeEvent}
       disabled={props.disabled}
       onKeyDown={props.onKeyDownEvent}
-      {...props.register(props.name)}
-      // style 요소
       margin={props.margin}
       height={props.height}
       padding={props.padding}
