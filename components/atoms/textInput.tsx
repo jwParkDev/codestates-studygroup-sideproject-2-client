@@ -1,4 +1,5 @@
 import React from 'react';
+import { RegisterOptions } from 'react-hook-form';
 import styled from 'styled-components';
 import { StyleBase } from '../Interface';
 // import { FieldValues, UseFormRegister } from "react-hook-form";
@@ -25,15 +26,19 @@ interface TextInputPropsTypes extends StyleBase {
   onChangeEvent?: React.ChangeEventHandler<HTMLInputElement>,
   disabled?: boolean,
   onKeyDownEvent?: React.KeyboardEventHandler<HTMLInputElement>,
-  register(name: string): any,
+  // https://react-hook-form.com/api/useform/register
+  register(name: string, RegisterOptions?): ({ name: string }),
 }
+
+
 
 export default function TextInput(props: TextInputPropsTypes):React.ReactElement {
   return (
     <StyledInput
       type={props.type}
       id={props.name}
-      name={props.name}
+      name={props.register(props.name).name}
+      // name={props.name}
       value={props.value}
       defaultValue={props.defaultValue}
       placeholder={props.placeholder}
@@ -41,8 +46,6 @@ export default function TextInput(props: TextInputPropsTypes):React.ReactElement
       onChange={props.onChangeEvent}
       disabled={props.disabled}
       onKeyDown={props.onKeyDownEvent}
-      {...props.register(props.name)}
-      // style 요소
       margin={props.margin}
       height={props.height}
       padding={props.padding}
